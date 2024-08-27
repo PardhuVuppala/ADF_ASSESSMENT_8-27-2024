@@ -1,0 +1,17 @@
+{
+	"name": "FartTable_CustomerOrderDetails",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DS_Customer_Orderdetails",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "reporting",
+			"table": "Customer_Orderdetails"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

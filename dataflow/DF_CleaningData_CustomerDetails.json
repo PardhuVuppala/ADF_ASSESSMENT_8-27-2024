@@ -1,0 +1,72 @@
+{
+	"name": "DF_CleaningData_CustomerDetails",
+	"properties": {
+		"folder": {
+			"name": "DF-raw"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_Appended_raw_data_customerDetails",
+						"type": "DatasetReference"
+					},
+					"name": "DSCustomerDetailsRaw"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_prep_Details",
+						"type": "DatasetReference"
+					},
+					"name": "DSpreporderDetails"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CustomerID as string,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          Email as string,",
+				"          PhoneNumber as string,",
+				"          Address as string,",
+				"          City as string,",
+				"          State as string,",
+				"          ZipCode as string,",
+				"          Country as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> DSCustomerDetailsRaw",
+				"DSCustomerDetailsRaw derive(Address = iif(Address==\"NULL\"|| Address== \"\" , toString(null()), Address),",
+				"          FirstName = iif(FirstName==\"NULL\" || FirstName==\"\" , toString(null()), FirstName),",
+				"          LastName = iif(LastName==\"NULL\" || LastName==\"\" , toString(null()), LastName),",
+				"          Email = iif(Email==\"NULL\" || Email==\"\" , toString(null()), Email),",
+				"          State = iif(State==\"NULL\" , toString(null()), State),",
+				"          ZipCode = iif(ZipCode==\"NULL\" , toString(null()), ZipCode),",
+				"          Country = iif(Country==\"NULL\" , toString(null()), Country),",
+				"          PhoneNumber = iif(PhoneNumber==\"NULL\" , toString(null()), PhoneNumber),",
+				"          City = iif(City==\"NULL\" , toString(null()), City)) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     partitionBy('hash', 1)) ~> DSpreporderDetails"
+			]
+		}
+	}
+}

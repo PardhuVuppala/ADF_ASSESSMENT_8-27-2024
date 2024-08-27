@@ -1,0 +1,17 @@
+{
+	"name": "orderdetails_rawdata_appended_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DS_Customer_Orderdetails",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "raw",
+			"table": "orderdetails-rawdata-appended"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

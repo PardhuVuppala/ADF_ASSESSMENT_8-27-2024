@@ -1,0 +1,37 @@
+{
+	"name": "DS_CustomerOrderdEtails",
+	"properties": {
+		"activities": [
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "reporting-Coustomer-OrderDetails",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "DS_Reporting"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-08-27T12:44:42Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,22 @@
+{
+	"name": "DS_OrderDetails_raw",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DS_Order_Employee_Details",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "Input DS",
+				"container": "input-container"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

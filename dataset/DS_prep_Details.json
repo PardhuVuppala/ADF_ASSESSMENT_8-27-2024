@@ -1,0 +1,17 @@
+{
+	"name": "DS_prep_Details",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DS_Customer_Orderdetails",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "prep",
+			"table": "ds-prep-Orderdetails"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

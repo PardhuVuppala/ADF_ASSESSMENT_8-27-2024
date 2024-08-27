@@ -1,0 +1,25 @@
+{
+	"name": "DS_Appended_raw_data_customerDetails",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DS_Order_Employee_Details",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "DS-Appended-Raw-CustomerDetails.csv",
+				"folderPath": "CustomerDetails_Appended_Raw",
+				"container": "consolidated-container"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

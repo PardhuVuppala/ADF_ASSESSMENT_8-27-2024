@@ -1,0 +1,102 @@
+{
+	"name": "reporting-Coustomer-OrderDetails",
+	"properties": {
+		"folder": {
+			"name": "DS-Reporting"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_appended_rawdata_orderdeatils",
+						"type": "DatasetReference"
+					},
+					"name": "OrderDetails"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_Appended_raw_data_customerDetails",
+						"type": "DatasetReference"
+					},
+					"name": "Customerdetails"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "FartTable_CustomerOrderDetails",
+						"type": "DatasetReference"
+					},
+					"name": "farttableCutomerOrderDetails"
+				}
+			],
+			"transformations": [
+				{
+					"name": "LeftOuterJoin"
+				},
+				{
+					"name": "OrderDetailsByCustomerID"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          OrderID as short,",
+				"          ProductID as string,",
+				"          ProductName as string,",
+				"          Quantity as short,",
+				"          OrderTimestamp as string,",
+				"          Price as double,",
+				"          CustomerID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> OrderDetails",
+				"source(output(",
+				"          CustomerID as string,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          Email as string,",
+				"          PhoneNumber as string,",
+				"          Address as string,",
+				"          City as string,",
+				"          State as string,",
+				"          ZipCode as string,",
+				"          Country as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Customerdetails",
+				"OrderDetails, Customerdetails join(OrderDetails@CustomerID == Customerdetails@CustomerID,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     partitionBy('hash', 1),",
+				"     broadcast: 'auto')~> LeftOuterJoin",
+				"LeftOuterJoin select(mapColumn(",
+				"          CustomerID = Customerdetails@CustomerID,",
+				"          OrderID,",
+				"          ProductID,",
+				"          ProductName,",
+				"          Quantity,",
+				"          FirstName,",
+				"          PhoneNumber,",
+				"          ZipCode,",
+				"          OrderTimestamp",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> OrderDetailsByCustomerID",
+				"OrderDetailsByCustomerID sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> farttableCutomerOrderDetails"
+			]
+		}
+	}
+}
